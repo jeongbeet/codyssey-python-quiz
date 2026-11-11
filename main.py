@@ -137,6 +137,65 @@ class QuizGame:
         except Exception as e:
             print(f"⚠️ 데이터 저장 중 오류가 발생했습니다: {e}")
 
+    def get_int_input(self, prompt: str, min_val: int, max_val: int) -> int:
+        """정수 입력을 받아 앞뒤 공백을 제거하고 범위를 검증합니다."""
+        while True:
+            raw = input(prompt).strip()
+            if not raw:
+                print(f"⚠️ 잘못된 입력입니다. {min_val}-{max_val} 사이의 숫자를 입력하세요.\n")
+                continue
+            try:
+                value = int(raw)
+            except ValueError:
+                print(f"⚠️ 잘못된 입력입니다. {min_val}-{max_val} 사이의 숫자를 입력하세요.\n")
+                continue
+
+            if not (min_val <= value <= max_val):
+                print(f"⚠️ 잘못된 입력입니다. {min_val}-{max_val} 사이의 숫자를 입력하세요.\n")
+                continue
+            return value
+
+    def display_menu(self, show_loaded_banner: bool = False) -> None:
+        """메인 메뉴 화면을 출력합니다."""
+        print("\n==========================================")
+        print("         🎯 나만의 퀴즈 게임 🎯")
+        print("==========================================")
+        if show_loaded_banner and self.loaded_from_file:
+            print(f"📁 저장된 데이터를 불러왔습니다. (퀴즈 {len(self.quizzes)}개, 최고점수 {self.best_score}점)")
+            print("==========================================")
+        print("1. 퀴즈 풀기")
+        print("2. 퀴즈 추가")
+        print("3. 퀴즈 목록")
+        print("4. 점수 확인")
+        print("5. 종료")
+        print("==========================================")
+
+    def run(self) -> None:
+        """프로그램 메인 루프를 실행합니다."""
+        first_turn = True
+        try:
+            while True:
+                self.display_menu(show_loaded_banner=first_turn)
+                first_turn = False
+                choice = self.get_int_input("선택: ", 1, 5)
+
+                if choice == 1:
+                    print("\n[안내] 퀴즈 풀기 기능 준비 중입니다.")
+                elif choice == 2:
+                    print("\n[안내] 퀴즈 추가 기능 준비 중입니다.")
+                elif choice == 3:
+                    print("\n[안내] 퀴즈 목록 기능 준비 중입니다.")
+                elif choice == 4:
+                    print("\n[안내] 점수 확인 기능 준비 중입니다.")
+                elif choice == 5:
+                    self.save_data()
+                    print("\n👋 퀴즈 게임을 종료합니다. 감사합니다!")
+                    break
+        except (KeyboardInterrupt, EOFError):
+            print("\n\n⚠️ 프로그램 종료 요청이 감지되었습니다. 데이터를 안전하게 저장하고 종료합니다.")
+            self.save_data()
+
 
 if __name__ == "__main__":
     game = QuizGame()
+    game.run()
