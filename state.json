@@ -1,0 +1,58 @@
+{
+  "quizzes": [
+    {
+      "question": "Python 언어를 처음 만든 창시자는 누구인가요?",
+      "choices": [
+        "Guido van Rossum",
+        "Elon Musk",
+        "Bill Gates",
+        "James Gosling"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Python에서 리스트(list)의 맨 끝에 새로운 요소를 추가하는 메서드는?",
+      "choices": [
+        "add()",
+        "append()",
+        "push()",
+        "insert_end()"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Python 소스 코드 파일의 기본 확장자는 무엇인가요?",
+      "choices": [
+        ".py",
+        ".python",
+        ".pt",
+        ".pyc"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Python에서 키(Key)와 값(Value)의 쌍으로 데이터를 저장하는 자료형은?",
+      "choices": [
+        "int",
+        "str",
+        "list",
+        "dict"
+      ],
+      "answer": 4
+    },
+    {
+      "question": "Python 클래스에서 객체가 생성될 때 자동으로 호출되는 초기화 메서드는?",
+      "choices": [
+        "__start__",
+        "__main__",
+        "__init__",
+        "__new__"
+      ],
+      "answer": 3
+    }
+  ],
+  "best_score": 0,
+  "best_correct": 0,
+  "best_total": 0,
+  "has_played": false
+}
