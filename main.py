@@ -36,3 +36,33 @@ class Quiz:
         if not question or len(choices) != 4 or not (1 <= answer <= 4):
             raise ValueError("유효하지 않은 퀴즈 데이터 형식입니다.")
         return cls(question=question, choices=choices, answer=answer)
+
+    def get_default_quizzes() -> list[Quiz]:
+        """파이썬 기초 문법 주제의 기본 퀴즈 5개를 생성하여 반환합니다."""
+    return [
+        Quiz(
+            question="Python 언어를 처음 만든 창시자는 누구인가요?",
+            choices=["Guido van Rossum", "Elon Musk", "Bill Gates", "James Gosling"],
+            answer=1,
+        ),
+        Quiz(
+            question="Python에서 리스트(list)의 맨 끝에 새로운 요소를 추가하는 메서드는?",
+            choices=["add()", "append()", "push()", "insert_end()"],
+            answer=2,
+        ),
+        Quiz(
+            question="Python 소스 코드 파일의 기본 확장자는 무엇인가요?",
+            choices=[".py", ".python", ".pt", ".pyc"],
+            answer=1,
+        ),
+        Quiz(
+            question="Python에서 키(Key)와 값(Value)의 쌍으로 데이터를 저장하는 자료형은?",
+            choices=["int", "str", "list", "dict"],
+            answer=4,
+        ),
+        Quiz(
+            question="Python 클래스에서 객체가 생성될 때 자동으로 호출되는 초기화 메서드는?",
+            choices=["__start__", "__main__", "__init__", "__new__"],
+            answer=3,
+        ),
+    ]
