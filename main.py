@@ -155,6 +155,14 @@ class QuizGame:
                 continue
             return value
 
+    def get_non_empty_text(self, prompt: str) -> str:
+        """빈 문자열이 아닌 텍스트 입력을 받을 때까지 반복합니다."""
+        while True:
+            text = input(prompt).strip()
+            if text:
+                return text
+            print("⚠️ 내용을 비워둘 수 없습니다. 다시 입력해 주세요.")
+
     def display_menu(self, show_loaded_banner: bool = False) -> None:
         """메인 메뉴 화면을 출력합니다."""
         print("\n==========================================")
@@ -170,7 +178,7 @@ class QuizGame:
         print("5. 종료")
         print("==========================================")
 
-    def play_quiz(self) -> None: #1번
+    def play_quiz(self) -> None:
         """등록된 퀴즈를 출제하고 정답 여부와 점수를 계산합니다."""
         if not self.quizzes:
             print("\n⚠️ 출제할 퀴즈가 없습니다. 먼저 퀴즈를 추가해 주세요.")
@@ -203,7 +211,22 @@ class QuizGame:
         print("==========================================")
         self.save_data()
 
-    def show_quizzes(self) -> None: #3번
+    def add_quiz(self) -> None:
+        """사용자로부터 새로운 퀴즈 정보를 입력받아 등록하고 파일에 저장합니다."""
+        print("\n📌 새로운 퀴즈를 추가합니다.\n")
+        question = self.get_non_empty_text("문제를 입력하세요: ")
+        choices = []
+        for idx in range(1, 5):
+            choice = self.get_non_empty_text(f"선택지 {idx}: ")
+            choices.append(choice)
+        answer = self.get_int_input("정답 번호 (1-4): ", 1, 4)
+
+        new_quiz = Quiz(question=question, choices=choices, answer=answer)
+        self.quizzes.append(new_quiz)
+        self.save_data()
+        print("\n✅ 퀴즈가 추가되었습니다!")
+
+    def show_quizzes(self) -> None:
         """저장된 전체 퀴즈 목록을 출력합니다."""
         if not self.quizzes:
             print("\n⚠️ 등록된 퀴즈가 없습니다.")
@@ -215,7 +238,7 @@ class QuizGame:
             print(f"[{idx}] {quiz.question}")
         print("------------------------------------------")
 
-    def show_score(self) -> None: #4번
+    def show_score(self) -> None:
         """역대 최고 점수를 확인합니다."""
         if not self.has_played and self.best_score == 0:
             print("\n📊 아직 퀴즈를 풀이한 기록이 없습니다. 먼저 퀴즈를 풀어보세요!")
@@ -234,7 +257,7 @@ class QuizGame:
                 if choice == 1:
                     self.play_quiz()
                 elif choice == 2:
-                    print("\n[안내] 퀴즈 추가 기능 준비 중입니다.")
+                    self.add_quiz()
                 elif choice == 3:
                     self.show_quizzes()
                 elif choice == 4:
