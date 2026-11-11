@@ -51,8 +51,8 @@
       "answer": 3
     }
   ],
-  "best_score": 0,
-  "best_correct": 0,
-  "best_total": 0,
-  "has_played": false
+  "best_score": 100,
+  "best_correct": 6,
+  "best_total": 6,
+  "has_played": true
 }
