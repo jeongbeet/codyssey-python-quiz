@@ -170,6 +170,18 @@ class QuizGame:
         print("5. 종료")
         print("==========================================")
 
+    def show_quizzes(self) -> None:
+        """저장된 전체 퀴즈 목록을 출력합니다."""
+        if not self.quizzes:
+            print("\n⚠️ 등록된 퀴즈가 없습니다.")
+            return
+
+        print(f"\n📋 등록된 퀴즈 목록 (총 {len(self.quizzes)}개)\n")
+        print("------------------------------------------")
+        for idx, quiz in enumerate(self.quizzes, start=1):
+            print(f"[{idx}] {quiz.question}")
+        print("------------------------------------------")
+
     def run(self) -> None:
         """프로그램 메인 루프를 실행합니다."""
         first_turn = True
@@ -184,7 +196,7 @@ class QuizGame:
                 elif choice == 2:
                     print("\n[안내] 퀴즈 추가 기능 준비 중입니다.")
                 elif choice == 3:
-                    print("\n[안내] 퀴즈 목록 기능 준비 중입니다.")
+                    self.show_quizzes()
                 elif choice == 4:
                     print("\n[안내] 점수 확인 기능 준비 중입니다.")
                 elif choice == 5:
