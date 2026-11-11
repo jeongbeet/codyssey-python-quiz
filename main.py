@@ -1,5 +1,6 @@
 import json
 import os
+import random
 
 
 class Quiz:
@@ -179,16 +180,17 @@ class QuizGame:
         print("==========================================")
 
     def play_quiz(self) -> None:
-        """등록된 퀴즈를 출제하고 정답 여부와 점수를 계산합니다."""
+        """등록된 퀴즈를 랜덤 순서로 출제하고 정답 여부와 점수를 계산합니다."""
         if not self.quizzes:
             print("\n⚠️ 출제할 퀴즈가 없습니다. 먼저 퀴즈를 추가해 주세요.")
             return
 
-        total = len(self.quizzes)
+        shuffled_quizzes = random.sample(self.quizzes, len(self.quizzes))
+        total = len(shuffled_quizzes)
         correct_count = 0
-        print(f"\n📝 퀴즈를 시작합니다! (총 {total}문제)\n")
+        print(f"\n📝 퀴즈를 시작합니다! (총 {total}문제 - 랜덤 출제)\n")
 
-        for idx, quiz in enumerate(self.quizzes, start=1):
+        for idx, quiz in enumerate(shuffled_quizzes, start=1):
             print("------------------------------------------")
             quiz.display(idx)
             user_ans = self.get_int_input("정답 입력: ", 1, 4)
