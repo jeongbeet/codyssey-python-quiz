@@ -170,7 +170,7 @@ class QuizGame:
         print("5. 종료")
         print("==========================================")
 
-    def play_quiz(self) -> None:
+    def play_quiz(self) -> None: #1번
         """등록된 퀴즈를 출제하고 정답 여부와 점수를 계산합니다."""
         if not self.quizzes:
             print("\n⚠️ 출제할 퀴즈가 없습니다. 먼저 퀴즈를 추가해 주세요.")
@@ -203,7 +203,7 @@ class QuizGame:
         print("==========================================")
         self.save_data()
 
-    def show_quizzes(self) -> None:
+    def show_quizzes(self) -> None: #3번
         """저장된 전체 퀴즈 목록을 출력합니다."""
         if not self.quizzes:
             print("\n⚠️ 등록된 퀴즈가 없습니다.")
@@ -214,6 +214,13 @@ class QuizGame:
         for idx, quiz in enumerate(self.quizzes, start=1):
             print(f"[{idx}] {quiz.question}")
         print("------------------------------------------")
+
+    def show_score(self) -> None: #4번
+        """역대 최고 점수를 확인합니다."""
+        if not self.has_played and self.best_score == 0:
+            print("\n📊 아직 퀴즈를 풀이한 기록이 없습니다. 먼저 퀴즈를 풀어보세요!")
+            return
+        print(f"\n🏆 최고 점수: {self.best_score}점 ({self.best_total}문제 중 {self.best_correct}문제 정답)")
 
     def run(self) -> None:
         """프로그램 메인 루프를 실행합니다."""
@@ -231,7 +238,7 @@ class QuizGame:
                 elif choice == 3:
                     self.show_quizzes()
                 elif choice == 4:
-                    print("\n[안내] 점수 확인 기능 준비 중입니다.")
+                    self.show_score()
                 elif choice == 5:
                     self.save_data()
                     print("\n👋 퀴즈 게임을 종료합니다. 감사합니다!")
