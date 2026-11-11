@@ -39,7 +39,7 @@ class Quiz:
 
     def get_default_quizzes() -> list[Quiz]:
         """파이썬 기초 문법 주제의 기본 퀴즈 5개를 생성하여 반환합니다."""
-    return [
+        return [
         Quiz(
             question="Python 언어를 처음 만든 창시자는 누구인가요?",
             choices=["Guido van Rossum", "Elon Musk", "Bill Gates", "James Gosling"],
@@ -66,3 +66,12 @@ class Quiz:
             answer=3,
         ),
     ]
+
+class QuizGame:
+    """퀴즈 게임 전체 흐름과 데이터를 관리하는 클래스"""
+
+    def __init__(self, file_path: str = "state.json"):
+        self.file_path = file_path
+        self.quizzes: list[Quiz] = get_default_quizzes()
+        self.best_score: int = 0
+        self.has_played: bool = False
