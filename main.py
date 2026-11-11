@@ -170,6 +170,39 @@ class QuizGame:
         print("5. 종료")
         print("==========================================")
 
+    def play_quiz(self) -> None:
+        """등록된 퀴즈를 출제하고 정답 여부와 점수를 계산합니다."""
+        if not self.quizzes:
+            print("\n⚠️ 출제할 퀴즈가 없습니다. 먼저 퀴즈를 추가해 주세요.")
+            return
+
+        total = len(self.quizzes)
+        correct_count = 0
+        print(f"\n📝 퀴즈를 시작합니다! (총 {total}문제)\n")
+
+        for idx, quiz in enumerate(self.quizzes, start=1):
+            print("------------------------------------------")
+            quiz.display(idx)
+            user_ans = self.get_int_input("정답 입력: ", 1, 4)
+            if quiz.check_answer(user_ans):
+                print("✅ 정답입니다!")
+                correct_count += 1
+            else:
+                print(f"❌ 오답입니다! (정답: {quiz.answer}번)")
+
+        score = round((correct_count / total) * 100)
+        print("\n==========================================")
+        print(f"🏆 결과: {total}문제 중 {correct_count}문제 정답! ({score}점)")
+
+        self.has_played = True
+        if score > self.best_score:
+            self.best_score = score
+            self.best_correct = correct_count
+            self.best_total = total
+            print("🎉 새로운 최고 점수입니다!")
+        print("==========================================")
+        self.save_data()
+
     def show_quizzes(self) -> None:
         """저장된 전체 퀴즈 목록을 출력합니다."""
         if not self.quizzes:
@@ -192,7 +225,7 @@ class QuizGame:
                 choice = self.get_int_input("선택: ", 1, 5)
 
                 if choice == 1:
-                    print("\n[안내] 퀴즈 풀기 기능 준비 중입니다.")
+                    self.play_quiz()
                 elif choice == 2:
                     print("\n[안내] 퀴즈 추가 기능 준비 중입니다.")
                 elif choice == 3:
