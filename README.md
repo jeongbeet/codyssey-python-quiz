@@ -71,22 +71,24 @@ Python 3.10 이상 환경에서 외부 라이브러리 설치 없이 프로젝�
 
 ## 7. 실행 화면 및 검증 스크린샷
 
+## 7. 실행 화면 및 검증 스크린샷
+
 ### 1) 메인 메뉴 및 퀴즈 목록 (`docs/screenshots/menu.png`)
-[docs/screenshots/menu.png]
+<img src="docs/screenshots/menu.png" alt="메인 메뉴 화면" width="600" />
 
 ### 2) 퀴즈 풀기 (`docs/screenshots/play.png`)
-[docs/screenshots/play.png]
+<img src="docs/screenshots/play.png" alt="퀴즈 풀기 화면" width="600" />
 
 ### 3) 퀴즈 추가 (`docs/screenshots/add_quiz.png`)
-[docs/screenshots/add_quiz.png]
+<img src="docs/screenshots/add_quiz.png" alt="퀴즈 추가 화면" width="600" />
 
 ### 4) 점수 확인 (`docs/screenshots/score.png`)
-[docs/screenshots/score.png]
+<img src="docs/screenshots/score.png" alt="점수 확인 화면" width="600" />
 
 ### 5) 개발 환경 설정 확인 (`docs/screenshots/env.png`)
-[docs/screenshots/env.png]
+<img src="docs/screenshots/env.png" alt="개발 환경 설정" width="600" />
 
 ### 6) Git 그래프 로그 (`docs/screenshots/git_log.png`)
-[docs/screenshots/git_log.png]
+<img src="docs/screenshots/git_log.png" alt="Git 로그 그래프" width="600" />
 
 > Git clone 및 pull 동기화 실습을 완료했습니다.
