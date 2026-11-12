@@ -71,8 +71,6 @@ Python 3.10 이상 환경에서 외부 라이브러리 설치 없이 프로젝�
 
 ## 7. 실행 화면 및 검증 스크린샷
 
-## 7. 실행 화면 및 검증 스크린샷
-
 ### 1) 메인 메뉴 및 퀴즈 목록 (`docs/screenshots/menu.png`)
 <img src="docs/screenshots/menu.png" alt="메인 메뉴 화면" width="600" />
 
