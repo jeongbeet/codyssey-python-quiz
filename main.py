@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import random
 
 
@@ -87,44 +88,73 @@ class QuizGame:
         self.loaded_from_file: bool = False
         self.load_data()
 
+    def _parse_and_set_data(self, target_path: str) -> None:
+        """지정된 경로의 JSON 파일을 읽어 유효성을 검증하고 인스턴스 상태를 설정합니다."""
+        with open(target_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        if not isinstance(data, dict) or "quizzes" not in data or "best_score" not in data:
+            raise ValueError("JSON 필수 키가 누락되었습니다.")
+
+        loaded_quizzes = [Quiz.from_dict(q) for q in data["quizzes"]]
+        best_score = int(data["best_score"])
+        if best_score < 0:
+            raise ValueError("최고 점수는 음수일 수 없습니다.")
+
+        self.quizzes = loaded_quizzes
+        self.best_score = best_score
+        self.best_correct = int(data.get("best_correct", 0))
+        self.best_total = int(data.get("best_total", len(self.quizzes)))
+        self.has_played = bool(data.get("has_played", self.best_score > 0))
+        self.loaded_from_file = True
+
+    def _reset_to_default(self, create_backup: bool = False) -> None:
+        """기본 퀴즈 데이터로 상태를 초기화하고 저장합니다."""
+        self.quizzes = get_default_quizzes()
+        self.best_score = 0
+        self.best_correct = 0
+        self.best_total = len(self.quizzes)
+        self.has_played = False
+        self.loaded_from_file = False
+        self.save_data(create_backup=create_backup)
+
     def load_data(self) -> None:
-        """state.json 파일에서 데이터를 불러오고, 없거나 손상된 경우 기본 데이터로 복구합니다."""
+        """state.json 파일에서 데이터를 불러오고, 손상된 경우 백업(.bak) 복원 또는 기본 데이터 초기화 옵션을 제공합니다."""
+        backup_path = f"{self.file_path}.bak"
+
         if not os.path.exists(self.file_path):
-            self.quizzes = get_default_quizzes()
-            self.best_score = 0
-            self.save_data()
+            self._reset_to_default(create_backup=False)
             return
 
         try:
-            with open(self.file_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-
-            if not isinstance(data, dict) or "quizzes" not in data or "best_score" not in data:
-                raise ValueError("JSON 필수 키가 누락되었습니다.")
-
-            loaded_quizzes = [Quiz.from_dict(q) for q in data["quizzes"]]
-            best_score = int(data["best_score"])
-            if best_score < 0:
-                raise ValueError("최고 점수는 음수일 수 없습니다.")
-
-            self.quizzes = loaded_quizzes
-            self.best_score = best_score
-            self.best_correct = int(data.get("best_correct", 0))
-            self.best_total = int(data.get("best_total", len(self.quizzes)))
-            self.has_played = bool(data.get("has_played", self.best_score > 0))
-            self.loaded_from_file = True
+            self._parse_and_set_data(self.file_path)
         except Exception:
-            print("⚠️ 데이터 파일이 손상되어 기본 퀴즈 데이터로 초기화합니다.")
-            self.quizzes = get_default_quizzes()
-            self.best_score = 0
-            self.best_correct = 0
-            self.best_total = len(self.quizzes)
-            self.has_played = False
-            self.loaded_from_file = False
-            self.save_data()
+            print("⚠️ 데이터 파일이 손상되었습니다.")
+            if os.path.exists(backup_path):
+                choice = input(
+                    f"백업 파일({backup_path})에서 복원하시겠습니까? (y: 백업 복원 / n: 기본 데이터 초기화): "
+                ).strip().lower()
+                if choice == "y":
+                    try:
+                        self._parse_and_set_data(backup_path)
+                        shutil.copy2(backup_path, self.file_path)
+                        print(f"✅ 백업 파일({backup_path})로부터 데이터를 성공적으로 복원했습니다.")
+                        return
+                    except Exception:
+                        print("⚠️ 백업 파일도 손상되어 기본 퀴즈 데이터로 초기화합니다.")
 
-    def save_data(self) -> None:
-        """현재 퀴즈 목록과 최고 점수를 state.json 파일에 UTF-8로 저장합니다."""
+            print("⚠️ 데이터 파일이 손상되어 기본 퀴즈 데이터로 초기화합니다.")
+            self._reset_to_default(create_backup=False)
+
+    def save_data(self, create_backup: bool = True) -> None:
+        """현재 퀴즈 목록과 최고 점수를 저장하며, 저장 전 기존 파일을 .bak으로 자동 백업합니다."""
+        backup_path = f"{self.file_path}.bak"
+        if create_backup and os.path.exists(self.file_path):
+            try:
+                shutil.copy2(self.file_path, backup_path)
+            except OSError as e:
+                print(f"⚠️ 백업 파일 생성 중 오류가 발생했습니다: {e}")
+
         data = {
             "quizzes": [q.to_dict() for q in self.quizzes],
             "best_score": self.best_score,
